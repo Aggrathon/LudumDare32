@@ -3,12 +3,16 @@
 [RequireComponent(typeof(Rigidbody))]
 public class FlightController : MonoBehaviour {
 
-    public float enginePower = 500f;
-    public float engineReversePower = 300f;
+    public float enginePower = 600f;
+    public float engineReversePower = 400f;
+    public float engineBoostMultiplier = 2.5f;
     public float turnPower = 10f;
-    public float mouseSensitivity = 10f;
-    public float controllerSensitivity = 10f;
-    public float maxCameraAngle = 45f;
+
+    public float destroySpeed = 20f;
+
+    [Header("Input")]
+    public float mouseSensitivity = 5f;
+    public float controllerSensitivity = 5f;
 
     new private Rigidbody rigidbody;
 
@@ -32,16 +36,15 @@ public class FlightController : MonoBehaviour {
         float throttle = Input.GetAxis("Vertical");
 
         if (throttle > 0)
+        {
+            if (Input.GetButton("Boost"))
+                throttle *= engineBoostMultiplier; 
             rigidbody.AddForce(transform.forward * throttle * enginePower * Time.fixedDeltaTime, ForceMode.Acceleration);
+        }
         else
             rigidbody.AddForce(transform.forward * throttle * engineReversePower * Time.fixedDeltaTime, ForceMode.Acceleration);
 
         rigidbody.AddTorque(new Vector3(-roll, yaw, pitch), ForceMode.Acceleration);
-
-        Vector3 rot = rigidbody.angularVelocity.normalized * Mathf.Min(rigidbody.angularVelocity.magnitude, maxCameraAngle);
-
-        Camera.main.transform.rotation = transform.rotation * Quaternion.Euler(rot);
-
         //Debug.Log("roll: " + roll + " pitch: " + pitch + " yaw: " + yaw + " throttle: " + throttle);
     }
 
@@ -49,7 +52,8 @@ public class FlightController : MonoBehaviour {
 
     public void OnCollisionEnter(Collision collision)
     {
-        GameObject.FindObjectOfType<GamestateManager>().Die();
+        if(collision.relativeVelocity.magnitude > destroySpeed)
+            GameObject.FindObjectOfType<GamestateManager>().Die();
     }
 
     

@@ -2,60 +2,42 @@
 
 public class FlightLook : MonoBehaviour {
 
-    Vector3 rotation;
     Transform target;
+    Vector3 axel;
 
-    public float sensitivity = 6f;
-    public float maxAngle = 90f;
+    public Vector3 offset = new Vector3(0, 1, -2);
+    public float followDistance = 2f;
+    public float followSpeed = 10f;
 
-    public float followDistance = 4f;
-    public float followSpeed = 1f;
-
-	// Use this for initialization
-	void Start () {
-        rotation = transform.rotation.eulerAngles;
-	}
     void OnEnable()
     {
         findTarget();
-        transform.position = getTargetPos();
+        transform.rotation = target.rotation;
+        axel = target.position + target.TransformDirection(offset);
+        transform.position = axel + transform.forward * (-followDistance);
     }
 	
 	// Update is called once per frame
-	void Update () {
-        rotation.x = transform.localEulerAngles.x + Input.GetAxis("Mouse Y") * sensitivity;
-        rotation.z = transform.localEulerAngles.z - Mathf.Clamp(Input.GetAxis("Mouse X") * sensitivity, -maxAngle, maxAngle);
-
-
-        transform.localEulerAngles = rotation;
-        transform.position = Vector3.Lerp(transform.position, getTargetPos(), Time.deltaTime*followSpeed);
-	}
-
-    Vector3 getTargetPos()
+    void LateUpdate()
     {
+
         if (target == null)
+            findTarget();
+        if (target != null)
         {
-            
-            Vector3 offset = (target.forward - transform.forward).normalized * (-followDistance);
-            return target.position + offset;
+            transform.rotation = Quaternion.Lerp(transform.rotation, target.rotation, Time.deltaTime * followSpeed);
+            Vector3 rotatedBit = transform.forward * (-followDistance);
+            axel = Vector3.Slerp(axel, target.position + target.TransformDirection(offset), 1);//Time.deltaTime * followSpeed);
+            transform.position = Vector3.Slerp(transform.position, axel + rotatedBit, 1);//Time.deltaTime * followSpeed);
         }
-        else
-            return Vector3.zero;
     }
 
     void findTarget()
     {
         GameObject go = GameObject.FindGameObjectWithTag("Player");
-        if(go != null)
+        if (go != null)
             target = go.transform;
-    }
-
-    public float getAngleX()
-    {
-        return 0f;
-    }
-    public float getAngleZ()
-    {
-        return 0f;
+        else
+            Debug.Log("Camera couldn't Find Player");
     }
 }
