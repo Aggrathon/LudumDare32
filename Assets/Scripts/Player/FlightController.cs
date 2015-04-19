@@ -10,18 +10,31 @@ public class FlightController : MonoBehaviour {
 
     public float destroySpeed = 20f;
 
-    [Header("Input")]
     public static float sensitivity = 5f;
+    public static GameObject bombs;
 
     new private Rigidbody rigidbody;
 
 	// Use this for initialization
 	void Start () {
         rigidbody = GetComponent<Rigidbody>();
+        bombs = null;
 	}
 	
 	// Update is called once per frame
 	void Update () {
+        if (Input.GetButtonUp("Fire"))
+        {
+            if (bombs != null)
+            {
+                GameObject go = SimplePool.Spawn(bombs, transform.position - transform.up, transform.rotation);
+                Rigidbody rb = go.GetComponent<Rigidbody>();
+                if (rb != null)
+                {
+                    rb.velocity = rigidbody.velocity - transform.up;
+                }
+            }
+        }
 	
 	}
 

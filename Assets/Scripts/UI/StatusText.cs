@@ -7,6 +7,8 @@ public class StatusText : MonoBehaviour {
 
     Text text;
 
+    string[] texts;
+
     int energy = 0;
     int hull = 0;
 
@@ -20,6 +22,7 @@ public class StatusText : MonoBehaviour {
             if (!sh.Enemy)
                 health = sh;
         shields = health.gameObject.GetComponentInChildren<Forcefield>();
+        texts = text.text.Split('*');
 	}
 
     void Update()
@@ -31,7 +34,7 @@ public class StatusText : MonoBehaviour {
         {
             hull = newhull;
             energy = newenergy;
-            text.text = "Battleship status\nShields: " + energy + "%\nHull: " + hull + "%";
+            text.text = texts[0] + energy + texts[1] + hull + texts[2];
         }
 	}
 }

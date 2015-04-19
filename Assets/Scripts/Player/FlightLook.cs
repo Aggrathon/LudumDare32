@@ -7,7 +7,8 @@ public class FlightLook : MonoBehaviour {
 
     public Vector3 offset = new Vector3(0, 1, -2);
     public float followDistance = 2f;
-    public float followSpeed = 10f;
+    public float followSpeed = 50f;
+    public float followRotationSpeed = 500f;
 
     public void OnEnable()
     {
@@ -22,10 +23,9 @@ public class FlightLook : MonoBehaviour {
             findTarget();
         if (target != null)
         {
-            transform.rotation = Quaternion.Slerp(transform.rotation, target.rotation, Time.deltaTime * followSpeed);
-            Vector3 rotatedBit = transform.forward * (-followDistance);
-            Vector3 axel = target.position + target.TransformDirection(offset);
-            transform.position = Vector3.Slerp(transform.position, axel + rotatedBit, Time.deltaTime * followSpeed);
+            transform.rotation = target.rotation;
+            transform.position = target.position + offset - transform.forward * followDistance;// * Vector3.Distance(transform.position, target.position + offset);
+            //transform.position = Vector3.Slerp(transform.position, target.position +offset, Time.deltaTime * followSpeed);
         }
     }
 

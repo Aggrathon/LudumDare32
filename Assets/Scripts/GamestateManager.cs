@@ -3,26 +3,151 @@ using UnityEngine.UI;
 
 public class GamestateManager : MonoBehaviour {
 
-    public GameObject DeadScreen;
+    [Header("UI")]
+    public GameObject deadScreen;
     public GameObject winScreen;
     public GameObject menu;
+    public GameObject intro;
+    [Header("Objects")]
+    public GameObject inSpace;
+    public GameObject inShip;
+    public GameObject status;
+    public GameObject crafting;
+
+    private states state;
+    private states prevState;
+
+    public enum states
+    {
+        Intro,
+        Menu,
+        Dead,
+        Victory,
+        Flying,
+        Battleship,
+        StatusView,
+        Crafting
+    }
 
     void OnEnable()
     {
-        Time.timeScale = 1f;
-        Cursor.lockState = CursorLockMode.Locked;
-        Cursor.visible = false;
+        deadScreen.SetActive(false);
+        winScreen.SetActive(false);
+        menu.SetActive(false);
+        inSpace.SetActive(false);
+        inShip.SetActive(false);
+        status.SetActive(false);
+        crafting.SetActive(false);
+
+        state = states.Battleship;
+        prevState = states.Battleship;
+        showIntro();
     }
 
     void Update()
     {
         if (Input.GetButtonDown("Menu"))
         {
-            if (DeadScreen.activeSelf || winScreen.activeSelf)
-                Restart();
-            else
-                Pause();
+            switch (state)
+            {
+                case states.Victory:
+                case states.Dead:
+                    Restart();
+                    break;
+                default:
+                    Pause();
+                    break;
+            }
         }
+    }
+
+    void lockCursor()
+    {
+        Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;
+    }
+
+    void unlockCursor()
+    {
+        Cursor.lockState = CursorLockMode.None;
+        Cursor.visible = true;
+    }
+
+    void changeState(states newState) {
+        if (newState == states.Flying)
+                lockCursor();
+        else
+            unlockCursor();
+        if (newState == states.Menu || newState == states.Intro || newState == states.Victory || newState == states.Dead)
+                Time.timeScale = 0f;
+        else
+            Time.timeScale = 1f;
+
+        if (newState != states.Menu)
+        {
+            switch (state)
+            {
+                case states.Intro:
+                    intro.SetActive(false);
+                    break;
+                case states.Menu:
+                    menu.SetActive(false);
+                    break;
+                case states.Flying:
+                    inSpace.SetActive(false);
+                    break;
+                case states.Battleship:
+                    inShip.SetActive(false);
+                    break;
+                case states.Crafting:
+                    crafting.SetActive(false);
+                    break;
+                case states.Dead:
+                    deadScreen.SetActive(false);
+                    break;
+                case states.Victory:
+                    deadScreen.SetActive(false);
+                    break;
+                case states.StatusView:
+                    status.SetActive(false);
+                    break;
+            }
+        }
+        switch (newState)
+        {
+            case states.Intro:
+                intro.SetActive(true);
+                break;
+            case states.Menu:
+                menu.SetActive(true);
+                break;
+            case states.Flying:
+                inSpace.SetActive(true);
+                break;
+            case states.Battleship:
+                inShip.SetActive(true);
+                break;
+            case states.Crafting:
+                crafting.SetActive(true);
+                break;
+            case states.Dead:
+                deadScreen.SetActive(true);
+                break;
+            case states.Victory:
+                deadScreen.SetActive(true);
+                break;
+            case states.StatusView:
+                status.SetActive(true);
+                break;
+        }
+        if(state != states.Menu)
+            prevState = state;
+        state = newState;
+    }
+
+    public void PreviousState()
+    {
+        changeState(prevState);
     }
 
     public void ChangeSensitivity(float val)
@@ -34,42 +159,50 @@ public class GamestateManager : MonoBehaviour {
         FlightController.sensitivity = slider.value;
     }
 
+    public void showIntro()
+    {
+        changeState(states.Intro);
+    }
+
+    public void craftView()
+    {
+        changeState(states.Crafting);
+    }
+
+    public void viewStatus()
+    {
+        changeState(states.StatusView);
+    }
 
     public void Win()
     {
-        winScreen.SetActive(true);
+        changeState(states.Victory);
     }
 
     public void Die()
     {
-        DeadScreen.SetActive(true);
+        changeState(states.Dead);
     }
 
     public void EnterBattleShip()
     {
-        Pause();
+        changeState(states.Battleship);
     }
 
     public void EnterFighterShip()
     {
-        Pause();
+        changeState(states.Flying);
     }
 
     public void Pause()
     {
-        if (Time.timeScale == 0f)
+        if (state == states.Menu)
         {
-            Time.timeScale = 1f;
-            menu.SetActive(false);
-            Cursor.lockState = CursorLockMode.Locked;
-            Cursor.visible = false;
+            changeState(prevState);
         }
         else
         {
-            Time.timeScale = 0f;
-            menu.SetActive(true);
-            Cursor.lockState = CursorLockMode.None;
-            Cursor.visible = true;
+            changeState(states.Menu);
         }
     }
 

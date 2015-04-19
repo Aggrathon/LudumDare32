@@ -14,23 +14,5 @@ public class HangarLauncher : MonoBehaviour {
         Rigidbody rig = fighter.GetComponent<Rigidbody>();
         rig.AddForce(fighter.transform.forward*launchSpeed, ForceMode.VelocityChange);
         rig.AddTorque(Vector3.zero, ForceMode.VelocityChange);
-
-        foreach (TrailRenderer tr in fighter.GetComponentsInChildren<TrailRenderer>())
-        {
-            StartCoroutine(ResetTrail(tr));   
-        }
     }
- 
-     /// <summary>
-     /// Coroutine to reset a trail renderer trail
-     /// </summary>
-     /// <param name="trail"></param>
-     /// <returns></returns>
-     static IEnumerator ResetTrail(TrailRenderer trail)
-     {
-         var trailTime = trail.time;
-         trail.time = 0;
-         yield return 0;
-         trail.time = trailTime;
-     }  
 }
