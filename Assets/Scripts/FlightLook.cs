@@ -3,7 +3,6 @@
 public class FlightLook : MonoBehaviour {
 
     Transform target;
-    Vector3 axel;
 
     public Vector3 offset = new Vector3(0, 1, -2);
     public float followDistance = 2f;
@@ -13,22 +12,21 @@ public class FlightLook : MonoBehaviour {
     {
         findTarget();
         transform.rotation = target.rotation;
-        axel = target.position + target.TransformDirection(offset);
-        transform.position = axel + transform.forward * (-followDistance);
+        transform.position = target.position + target.TransformDirection(offset) + transform.forward * (-followDistance);
     }
 	
 	// Update is called once per frame
-    void LateUpdate()
+    void FixedUpdate()
     {
 
         if (target == null)
             findTarget();
         if (target != null)
         {
-            transform.rotation = Quaternion.Lerp(transform.rotation, target.rotation, Time.deltaTime * followSpeed);
+            transform.rotation = Quaternion.Slerp(transform.rotation, target.rotation, Time.deltaTime * followSpeed);
             Vector3 rotatedBit = transform.forward * (-followDistance);
-            axel = Vector3.Slerp(axel, target.position + target.TransformDirection(offset), 1);//Time.deltaTime * followSpeed);
-            transform.position = Vector3.Slerp(transform.position, axel + rotatedBit, 1);//Time.deltaTime * followSpeed);
+            Vector3 axel = target.position + target.TransformDirection(offset);
+            transform.position = Vector3.Slerp(transform.position, axel + rotatedBit, Time.deltaTime * followSpeed);
         }
     }
 

@@ -5,8 +5,9 @@ public class GamestateManager : MonoBehaviour {
     public GameObject DeadScreen;
     public GameObject menu;
 
-    void Start()
+    void OnEnable()
     {
+        Time.timeScale = 1f;
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
     }
@@ -28,6 +29,15 @@ public class GamestateManager : MonoBehaviour {
         DeadScreen.SetActive(true);
     }
 
+    public void EnterBattleShip()
+    {
+        Pause();
+    }
+
+    public void EnterFighterShip()
+    {
+        Pause();
+    }
 
     public void Pause()
     {
