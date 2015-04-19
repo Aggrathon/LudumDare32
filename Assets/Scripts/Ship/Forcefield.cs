@@ -29,8 +29,13 @@ public class Forcefield : MonoBehaviour {
             return;
 
         energy -= energyDrain;
-        SimplePool.Despawn(other.gameObject);
         SimplePool.Spawn(impact, other.transform.position, Quaternion.Euler(-other.transform.forward));
+        SimplePool.Despawn(other.gameObject);
+    }
+
+    public float getShieldEnergyPercent()
+    {
+        return energy / maxEnergy;
     }
 
 	

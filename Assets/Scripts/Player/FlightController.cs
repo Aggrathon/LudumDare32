@@ -11,8 +11,7 @@ public class FlightController : MonoBehaviour {
     public float destroySpeed = 20f;
 
     [Header("Input")]
-    public float mouseSensitivity = 5f;
-    public float controllerSensitivity = 5f;
+    public static float sensitivity = 5f;
 
     new private Rigidbody rigidbody;
 
@@ -28,10 +27,10 @@ public class FlightController : MonoBehaviour {
 
     void FixedUpdate()
     {
-        float roll = (Input.GetAxis("Mouse X") * mouseSensitivity +
-            Input.GetAxis("Controller X")  * controllerSensitivity) * turnPower * Time.fixedDeltaTime;
-        float pitch = (Input.GetAxis("Mouse Y") * mouseSensitivity +
-            Input.GetAxis("Controller Y") * controllerSensitivity) * turnPower * Time.fixedDeltaTime;
+        float roll = (Input.GetAxis("Mouse X") + Input.GetAxis("Controller X"))
+             * sensitivity * turnPower * Time.fixedDeltaTime;
+        float pitch = (Input.GetAxis("Mouse Y") + Input.GetAxis("Controller Y")) 
+            * sensitivity * turnPower * Time.fixedDeltaTime;
         float yaw = Input.GetAxis("Horizontal") * turnPower * Time.fixedDeltaTime;
         float throttle = Input.GetAxis("Vertical");
 

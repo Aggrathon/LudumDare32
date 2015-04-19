@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.UI;
 
 public class GamestateManager : MonoBehaviour {
 
@@ -22,6 +23,15 @@ public class GamestateManager : MonoBehaviour {
             else
                 Pause();
         }
+    }
+
+    public void ChangeSensitivity(float val)
+    {
+        FlightController.sensitivity = val;
+    }
+    public void ChangeSensitivity(Slider slider)
+    {
+        FlightController.sensitivity = slider.value;
     }
 
 

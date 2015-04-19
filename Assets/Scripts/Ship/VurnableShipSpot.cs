@@ -5,7 +5,7 @@ public class VurnableShipSpot : ShipHealth {
 
     ShipHealth ship;
 
-    void Start()
+    void Awake()
     {
         ship = transform.parent.GetComponent<ShipHealth>();
         if (ship == null)
