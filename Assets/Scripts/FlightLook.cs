@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using System.Collections;
 
 public class FlightLook : MonoBehaviour {
 
@@ -8,13 +9,11 @@ public class FlightLook : MonoBehaviour {
     public float followDistance = 2f;
     public float followSpeed = 10f;
 
-    void OnEnable()
+    public void OnEnable()
     {
         findTarget();
-        transform.rotation = target.rotation;
-        transform.position = target.position + target.TransformDirection(offset) + transform.forward * (-followDistance);
     }
-	
+
 	// Update is called once per frame
     void FixedUpdate()
     {
@@ -32,10 +31,20 @@ public class FlightLook : MonoBehaviour {
 
     void findTarget()
     {
-        GameObject go = GameObject.FindGameObjectWithTag("Player");
-        if (go != null)
-            target = go.transform;
-        else
-            Debug.Log("Camera couldn't Find Player");
+        if (target == null)
+        {
+            GameObject go = GameObject.FindGameObjectWithTag("Player");
+            if (go != null)
+            {
+                target = go.transform;
+            }
+            else
+            {
+                Debug.Log("Camera couldn't Find Player");
+                return;
+            }
+        }
+        transform.rotation = target.rotation;
+        transform.position = target.position + target.TransformDirection(offset) + target.forward * (-followDistance);
     }
 }

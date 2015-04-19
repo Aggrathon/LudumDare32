@@ -44,7 +44,12 @@ public class FlightController : MonoBehaviour {
         else
             rigidbody.AddForce(transform.forward * throttle * engineReversePower * Time.fixedDeltaTime, ForceMode.Acceleration);
 
-        rigidbody.AddTorque(new Vector3(-roll, yaw, pitch), ForceMode.Acceleration);
+        Vector3 torque =
+            -transform.forward * roll +
+            transform.up * yaw +
+            transform.right * pitch;
+
+        rigidbody.AddTorque(torque, ForceMode.Acceleration);
         //Debug.Log("roll: " + roll + " pitch: " + pitch + " yaw: " + yaw + " throttle: " + throttle);
     }
 
