@@ -12,12 +12,30 @@ public class AutoCannon : MonoBehaviour {
     public float inaccuracy = 0.5f;
 
     float cooldown;
+    int layer;
 
 	// Use this for initialization
 	void Start () {
         if (startDelay < 0)
             startDelay = Random.Range(0f, -startDelay);
         cooldown = startDelay;
+
+        Transform topParent = transform;
+        ShipHealth sh;
+        while (topParent.parent != null)
+        {
+            topParent = topParent.parent;
+            sh = topParent.GetComponent<ShipHealth>();
+            if (sh != null)
+            {
+                if (sh.Enemy)
+                    layer = LayerMask.NameToLayer("enemyShield");
+                else
+                    layer = LayerMask.NameToLayer("friendlyShield");
+                break;
+            }
+        }
+
 	}
 	
 	void FixedUpdate () {
@@ -34,8 +52,12 @@ public class AutoCannon : MonoBehaviour {
         float angle = Random.Range(0f, 360f);
         float inacc = Random.Range(0f, inaccuracy);
         Vector3 dir = firePoint.eulerAngles + new Vector3(Mathf.Sin(angle) * inacc, Mathf.Cos(angle) * inacc, 0f);
-        GameObject go = SimplePool.Spawn(round, firePoint.position, Quaternion.Euler(dir));
+
+        GameObject projectile = SimplePool.Spawn(round, firePoint.position, Quaternion.Euler(dir));
+        Rigidbody rb = projectile.GetComponent<Rigidbody>();
+        rb.velocity = projectile.transform.forward * muzzleVelocity;
+        projectile.layer = layer;
+
         SimplePool.Spawn(muzzleFlash, firePoint.position, firePoint.rotation);
-        go.GetComponent<Rigidbody>().AddForce(go.transform.forward * muzzleVelocity, ForceMode.VelocityChange);
     }
 }

@@ -17,6 +17,14 @@ public class Explosive : MonoBehaviour {
             if (sh != null)
                 sh.Damage(explosionDamage);
         }
+        Rigidbody rb = GetComponent<Rigidbody>();
+        if (rb != null)
+        {
+            rb.AddForce(Vector3.zero, ForceMode.VelocityChange);
+            rb.AddTorque(Vector3.zero, ForceMode.VelocityChange);
+            rb.velocity = Vector3.zero;
+            rb.angularVelocity = Vector3.zero;
+        }
         SimplePool.Despawn(gameObject);
     }
 

@@ -3,16 +3,30 @@ using System.Collections;
 
 public class ShipHealth : MonoBehaviour {
 
+    public float maxHealth = 1000f;
+
     [SerializeField]
-    private float health = 100f;
-    public bool enemy;
+    [Header("Debug Only")]
+    private float health = 1000f;
+    [SerializeField]
+    private bool enemy = true;
 
-    public float Health { get { return health; } set { Damage(health - value); } }
+    virtual public float Health { get { return health; } set { health = value; CheckDeath(); } }
+    virtual public bool Enemy { get { return enemy; } set { enemy = value; } }
 
-    public void Damage(float amount)
+    void Start()
     {
-        health -= amount;
-        if (health < 0)
+        health = maxHealth;
+    }
+
+    public void  Damage(float amount)
+    {
+        Health -= amount;
+    }
+
+    public void CheckDeath() 
+    {
+        if (Health < 0)
         {
             if (enemy)
                 GameObject.FindObjectOfType<GamestateManager>().Win();
@@ -20,5 +34,10 @@ public class ShipHealth : MonoBehaviour {
                 GameObject.FindObjectOfType<GamestateManager>().Die();
         }
 
+    }
+
+    public float getHealthPercent()
+    {
+        return Health / maxHealth;
     }
 }
