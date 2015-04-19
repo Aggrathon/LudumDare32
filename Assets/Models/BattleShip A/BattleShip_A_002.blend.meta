@@ -6,7 +6,19 @@ ModelImporter:
   serializedVersion: 18
   fileIDToRecycleName:
     100000: //RootNode
+    100002: GunPoint
+    100004: GunPoint_001
+    100006: GunPoint_002
+    100008: GunPoint_003
+    100010: GunPoint_004
+    100012: GunRow
     400000: //RootNode
+    400002: GunPoint
+    400004: GunPoint_001
+    400006: GunPoint_002
+    400008: GunPoint_003
+    400010: GunPoint_004
+    400012: GunRow
     2300000: //RootNode
     3300000: //RootNode
     4300000: BattleShip

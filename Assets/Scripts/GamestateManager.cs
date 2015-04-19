@@ -3,6 +3,7 @@
 public class GamestateManager : MonoBehaviour {
 
     public GameObject DeadScreen;
+    public GameObject winScreen;
     public GameObject menu;
 
     void OnEnable()
@@ -16,13 +17,18 @@ public class GamestateManager : MonoBehaviour {
     {
         if (Input.GetButtonDown("Menu"))
         {
-            if (DeadScreen.activeSelf)
+            if (DeadScreen.activeSelf || winScreen.activeSelf)
                 Restart();
             else
                 Pause();
         }
     }
 
+
+    public void Win()
+    {
+        winScreen.SetActive(true);
+    }
 
     public void Die()
     {
