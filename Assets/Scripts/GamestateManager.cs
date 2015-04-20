@@ -14,6 +14,9 @@ public class GamestateManager : MonoBehaviour {
     public GameObject status;
     public GameObject crafting;
 
+    [HideInInspector]
+    public GameObject bomb;
+
     private states state;
     private states prevState;
 

@@ -18,6 +18,6 @@ public class EMP : MonoBehaviour {
             }
         }
         if(!dontDespawn)
-            SimplePool.Despawn(transform.parent.gameObject);
+            SimplePool.Despawn(gameObject);
     }
 }

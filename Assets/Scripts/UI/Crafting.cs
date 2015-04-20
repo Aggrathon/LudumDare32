@@ -10,9 +10,7 @@ public class Crafting : MonoBehaviour {
     static string[] detonators = { "Impact", "Timer", "Remote" };
     static string[] augmentors = { "Hardened batteries", "Acid" };
 
-    public GameObject[] gBases;
-    public GameObject[] gEffects;
-    public GameObject[] gDetonators;
+    public GameObject[] prefabs;
     
     int[] selection = new int[4];
 
@@ -86,31 +84,22 @@ public class Crafting : MonoBehaviour {
     {
         if (selection[0] != 0 && selection[1] != 0 && selection[2] != 0)
         {
-            text.text += "\n\nSuccessfully crafted item and loaded on to fighter";
-            GameObject parent = Instantiate<GameObject>(gBases[selection[0] - 1]);
-            GameObject go1 = Instantiate<GameObject>(gEffects[selection[1] - 1]);
-            go1.transform.SetParent(parent.transform);
-            GameObject go2 = Instantiate<GameObject>(gDetonators[selection[2] - 1]);
-            go2.transform.SetParent(parent.transform);
+            string name = selection[0] == 1 ? "Missile" : "Shell";
+            name += " " + selection[1];
+            name += " " + selection[2];
+            name += " " + selection[3];
 
-            switch (selection[3])
+            for (int i = 0; i < prefabs.Length; i++)
             {
-                case 1:
-                    foreach (EMP e in parent.GetComponentsInChildren<EMP>())
-                        e.dontDespawn = true;
-                    break;
-                case 2:
-                    foreach (Explosive e in parent.GetComponentsInChildren<Explosive>())
-                        e.explosionDamage *= 1.5f;
-                    break;
+                if (prefabs[i].name == name)
+                {
+                    GameObject.FindObjectOfType<GamestateManager>().bomb = prefabs[i];
+                    text.text += "\n\nSuccessfully crafted item and loaded on to fighter";
+                    return;
+                }
             }
 
-            parent.SetActive(false);
-            FlightController.bombs = parent;
         }
-        else
-        {
-            text.text += "Crafting failed";
-        }
+        text.text += "Crafting failed";
     }
 }

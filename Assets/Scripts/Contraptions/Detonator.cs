@@ -39,9 +39,9 @@ public class Detonator : MonoBehaviour {
 
     public void Detonate()
     {
-        foreach (Explosive e in transform.parent.GetComponentsInChildren<Explosive>())
+        foreach (Explosive e in transform.GetComponentsInChildren<Explosive>())
             e.Explode();
-        foreach (EMP e in transform.parent.GetComponentsInChildren<EMP>())
+        foreach (EMP e in transform.GetComponentsInChildren<EMP>())
             e.Blast();
     }
 }
