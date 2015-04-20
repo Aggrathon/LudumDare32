@@ -23,7 +23,7 @@ public class FlightController : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-        if (Input.GetButtonUp("Fire"))
+        if (Input.GetButtonUp("Fire") && Time.deltaTime > 0f)
         {
             GameObject bombs = GameObject.FindObjectOfType<GamestateManager>().bomb;
             if (bombs != null)

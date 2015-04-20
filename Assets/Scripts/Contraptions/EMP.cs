@@ -11,8 +11,9 @@ public class EMP : MonoBehaviour {
     {
         if (blastPrefab != null)
         {
-            SimplePool.Spawn(blastPrefab, transform.position, transform.rotation);
             SimplePool.Spawn(blastPrefab, transform.position, Quaternion.LookRotation(-transform.forward, transform.up));
+            SimplePool.Spawn(blastPrefab, transform.position, Quaternion.LookRotation(transform.right, transform.up));
+            SimplePool.Spawn(blastPrefab, transform.position, Quaternion.LookRotation(transform.up, transform.forward));
         }
         foreach (Collider col in Physics.OverlapSphere(transform.position, 1f))
         {

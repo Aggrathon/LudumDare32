@@ -81,10 +81,19 @@ public class GamestateManager : MonoBehaviour {
                 lockCursor();
         else
             unlockCursor();
-        if (newState == states.Menu || newState == states.Intro || newState == states.Victory || newState == states.Dead)
+        switch (newState)
+        {
+            case states.Menu:
+            case states.Intro:
+            case states.Victory:
+            case states.Dead:
+            case states.Crafting:
                 Time.timeScale = 0f;
-        else
-            Time.timeScale = 1f;
+                break;
+            default:
+                Time.timeScale = 1f;
+                break;
+        }
 
         if (newState != states.Menu)
         {

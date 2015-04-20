@@ -19,7 +19,7 @@ public class Detonator : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-        if (type == DetonType.Remote && Input.GetButtonUp("Interact"))
+        if (type == DetonType.Remote && Input.GetButtonUp("Detonate") && Time.deltaTime > 0f)
             Detonate();
         if (type == DetonType.Timer)
         {
