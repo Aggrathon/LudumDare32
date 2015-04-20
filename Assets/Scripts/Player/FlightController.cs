@@ -28,6 +28,7 @@ public class FlightController : MonoBehaviour {
             if (bombs != null)
             {
                 GameObject go = SimplePool.Spawn(bombs, transform.position - transform.up, transform.rotation);
+                go.SetActive(true);
                 Rigidbody rb = go.GetComponent<Rigidbody>();
                 if (rb != null)
                 {
