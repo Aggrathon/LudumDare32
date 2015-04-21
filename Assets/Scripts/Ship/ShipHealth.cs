@@ -28,7 +28,7 @@ public class ShipHealth : MonoBehaviour {
     {
         if (Health < 0)
         {
-            if (enemy)
+            if (Enemy)
                 GameObject.FindObjectOfType<GamestateManager>().Win();
             else
                 GameObject.FindObjectOfType<GamestateManager>().Die();

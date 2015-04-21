@@ -34,7 +34,8 @@ public class StatusText : MonoBehaviour {
         {
             hull = newhull;
             energy = newenergy;
-            text.text = texts[0] + energy + texts[1] + hull + texts[2];
+            string ener = (energy == 0f ? "<color=red>Offline</color>" : energy+"%");
+            text.text = texts[0] + ener + texts[1] + hull+"%" + texts[2];
         }
 	}
 }

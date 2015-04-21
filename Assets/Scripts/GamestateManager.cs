@@ -118,7 +118,7 @@ public class GamestateManager : MonoBehaviour {
                     deadScreen.SetActive(false);
                     break;
                 case states.Victory:
-                    deadScreen.SetActive(false);
+                    winScreen.SetActive(false);
                     break;
                 case states.StatusView:
                     status.SetActive(false);
